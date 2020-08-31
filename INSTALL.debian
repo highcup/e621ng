@@ -2,7 +2,7 @@
 
 # Run: curl -L -s https://raw.githubusercontent.com/keleuk/e621ng/master/INSTALL.debian -o install.sh ; chmod +x install.sh ; ./install.sh
 
-export RUBY_VERSION=2.5.3
+export RUBY_VERSION=2.7.0
 export GITHUB_INSTALL_SCRIPTS=https://raw.githubusercontent.com/zwagoth/e621ng/master/script/install
 export VIPS_VERSION=8.7.0
 
