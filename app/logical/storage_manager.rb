@@ -5,7 +5,7 @@ class StorageManager
 
   attr_reader :base_url, :base_dir, :hierarchical, :large_image_prefix, :protected_prefix, :base_path
 
-  def initialize(base_url: default_base_url, base_path: default_base_path, base_dir: DEFAULT_BASE_DIR, hierarchical: false,
+  def initialize(base_url: default_base_url, base_path: Danbooru.config.default_base_path, base_dir: DEFAULT_BASE_DIR, hierarchical: false,
                  large_image_prefix: Danbooru.config.large_image_prefix,
                  protected_prefix: Danbooru.config.protected_path_prefix)
     @base_url = base_url.chomp("/")
@@ -14,12 +14,6 @@ class StorageManager
     @protected_prefix = protected_prefix
     @hierarchical = hierarchical
     @large_image_prefix = large_image_prefix
-  end
-
-  #change to bucket name when using s3 with force_path_style: true or leave as "/" if force_path_style: false
-  #TODO change value based on storage type, bucketname, and force_path_style
-  def default_base_path
-    "/data"
   end
 
   def default_base_url

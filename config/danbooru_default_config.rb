@@ -481,6 +481,11 @@ fart'
     def aws_sqs_cropper_url
     end
 
+    #change to "/bucket_name" when using s3 with force_path_style: true or leave as "/" if force_path_style: false when using s3
+    def default_base_path
+      "/data"
+    end
+
     # The method to use for storing image files.
     def storage_manager
       # Store files on the local filesystem.
