@@ -46,14 +46,18 @@ class StorageManager::S3 < StorageManager
   end
 
   def move_file_delete(post)
-    data_bucket = client.Bucket.new(bucket)
-    file = data_bucket.object(file_path(post, post.file_ext, type, false))
-    file.move_to(data_bucket.object(file_path(post, post.file_ext, type, true))
+    IMAGE_TYPES.each do |type|
+      data_bucket = client.Bucket.new(bucket)
+      file = data_bucket.object(file_path(post, post.file_ext, type, false))
+      file.move_to(data_bucket.object(file_path(post, post.file_ext, type, true))
+    end
   end
 
   def move_file_undelete(post)
-    data_bucket = client.Bucket.new(bucket)
-    file = data_bucket.object(file_path(post, post.file_ext, type, true))
-    file.move_to(data_bucket.object(file_path(post, post.file_ext, type, false))
+    IMAGE_TYPES.each do |type|
+      data_bucket = client.Bucket.new(bucket)
+      file = data_bucket.object(file_path(post, post.file_ext, type, true))
+      file.move_to(data_bucket.object(file_path(post, post.file_ext, type, false))
+    end
   end
 end
