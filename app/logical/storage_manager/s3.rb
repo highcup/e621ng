@@ -44,4 +44,16 @@ class StorageManager::S3 < StorageManager
     client.get_object(bucket: bucket, key: key(path), response_target: file)
     file
   end
+
+  def move_file_delete(post)
+    data_bucket = client.Bucket.new(bucket)
+    file = data_bucket.object(file_path(post, post.file_ext, type, false))
+    file.move_to(data_bucket.object(file_path(post, post.file_ext, type, true))
+  end
+
+  def move_file_undelete(post)
+    data_bucket = client.Bucket.new(bucket)
+    file = data_bucket.object(file_path(post, post.file_ext, type, true))
+    file.move_to(data_bucket.object(file_path(post, post.file_ext, type, false))
+  end
 end
