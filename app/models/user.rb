@@ -79,7 +79,7 @@ class User < ApplicationRecord
 
 
   validates :name, user_name: true, on: :create
-  validates :default_image_size, inclusion: { :in => %w(large fit original) }
+  validates :default_image_size, inclusion: { :in => %w(large fit fitv original) }
   validates :per_page, inclusion: { :in => 1..320 }
   validates :comment_threshold, presence: true
   validates :comment_threshold, numericality: { only_integer: true, less_than: 50_000, greater_than: -50_000 }
@@ -449,7 +449,7 @@ class User < ApplicationRecord
     def throttle_reason(reason)
       reasons = {
           REJ_NEWBIE: 'can not yet perform this action. User not old enough',
-          REJ_LIMITED: 'has reached the hourly limit for this action'
+          REJ_LIMITED: 'have reached the hourly limit for this action'
       }
       reasons.fetch(reason, 'unknown throttle reason, please report this as a bug')
     end
