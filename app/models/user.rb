@@ -69,6 +69,7 @@ class User < ApplicationRecord
     validates :email, presence: { on: :create }
     validates :email, presence: { on: :update, if: ->(rec) { rec.email_changed? } }
     validates :email, uniqueness: { case_sensitive: false, on: :update, if: ->(rec) { rec.email.present? && rec.saved_change_to_email? } }
+    validates :email, uniqueness: { case_sensitive: false, on: :update, if: ->(rec) { rec.email.present? && rec.email_changed? } }
     validates :email, uniqueness: { case_sensitive: false, on: :create }
     validates :email, format: { with: /\A.+@[^ ,;@]+\.[^ ,;@]+\z/, on: :create }
     validates :email, format: { with: /\A.+@[^ ,;@]+\.[^ ,;@]+\z/, on: :update, if: ->(rec) { rec.email_changed? } }
@@ -448,7 +449,7 @@ class User < ApplicationRecord
   module ThrottleMethods
     def throttle_reason(reason)
       reasons = {
-          REJ_NEWBIE: 'can not yet perform this action. User not old enough',
+          REJ_NEWBIE: 'can not yet perform this action. Account is too new.',
           REJ_LIMITED: 'have reached the hourly limit for this action'
       }
       reasons.fetch(reason, 'unknown throttle reason, please report this as a bug')

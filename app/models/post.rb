@@ -1472,6 +1472,33 @@ class Post < ApplicationRecord
   end
 
   module DeletionMethods
+    def backup_post_data_destroy
+      post_data = {
+          id: id,
+          description: description,
+          md5: md5,
+          tags: tag_string,
+          height: image_height,
+          width: image_width,
+          file_size: file_size,
+          sources: source,
+          approver_id: approver_id,
+          locked_tags: locked_tags,
+          rating: rating,
+          parent_id: parent_id,
+          change_seq: change_seq,
+          is_deleted: is_deleted,
+          is_pending: is_pending,
+          duration: duration,
+          fav_count: fav_count,
+          comment_count: comment_count
+      }
+      DestroyedPost.create!(post_id: id, post_data: post_data, md5: md5,
+                            uploader_ip_addr: uploader_ip_addr, uploader_id: uploader_id,
+                            destroyer_id: CurrentUser.id, destroyer_ip_addr: CurrentUser.ip_addr,
+                            upload_date: created_at)
+    end
+
     def expunge!
       if is_status_locked?
         self.errors.add(:is_status_locked, "; cannot delete post")
@@ -1479,10 +1506,15 @@ class Post < ApplicationRecord
       end
 
       transaction do
+        backup_post_data_destroy
+      end
+
+      transaction do
         Post.without_timeout do
           ModAction.log(:post_destroy, {post_id: id, md5: md5})
 
-          give_favorites_to_parent! # Must be inline or else the post and favorites won't exist for the background job.
+          # TODO: Fix this. Cannot change isolation level during transaction.
+          # give_favorites_to_parent! # Must be inline or else the post and favorites won't exist for the background job.
           update_children_on_destroy
           decrement_tag_post_counts
           remove_from_all_pools
@@ -1513,9 +1545,10 @@ class Post < ApplicationRecord
         reason = last_flag.reason
       end
 
+      force_flag = options.fetch(:force, false)
       Post.with_timeout(30_000) do
         transaction do
-          flag = flags.create(reason: reason, reason_name: 'deletion', is_resolved: false, is_deletion: true)
+          flag = flags.create(reason: reason, reason_name: 'deletion', is_resolved: false, is_deletion: true, force_flag: force_flag)
 
           if flag.errors.any?
             raise PostFlag::Error.new(flag.errors.full_messages.join("; "))
@@ -1900,7 +1933,7 @@ class Post < ApplicationRecord
 
     def raw_tag_match(tag)
       tags = {related: tag.split(' '), include: [], exclude: []}
-      ElasticPostQueryBuilder.new(tag_count: tags[:related].size, tags: tags).build
+      ElasticPostQueryBuilder.new({tag_count: tags[:related].size, tags: tags}).build
     end
 
     def tag_match(query)
