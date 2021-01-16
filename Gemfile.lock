@@ -86,17 +86,17 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     awesome_print (1.8.0)
     aws-eventstream (1.1.0)
-    aws-partitions (1.363.0)
-    aws-sdk-core (3.105.0)
+    aws-partitions (1.416.0)
+    aws-sdk-core (3.111.1)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-kms (1.37.0)
-      aws-sdk-core (~> 3, >= 3.99.0)
+    aws-sdk-kms (1.41.0)
+      aws-sdk-core (~> 3, >= 3.109.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.79.1)
-      aws-sdk-core (~> 3, >= 3.104.3)
+    aws-sdk-s3 (1.87.0)
+      aws-sdk-core (~> 3, >= 3.109.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.2.2)
@@ -174,6 +174,8 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
+    ffi-win32-extensions (1.0.4)
+      ffi
     get_process_mem (0.2.7)
       ffi (~> 1.0)
     globalid (0.4.2)
@@ -282,6 +284,8 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.13.0)
     ptools (1.4.0)
+    ptools (1.4.0-universal-mingw32)
+      win32-file
     public_suffix (4.0.6)
     rack (2.2.3)
     rack-protection (2.1.0)
@@ -429,6 +433,13 @@ GEM
     websocket-extensions (0.1.5)
     whenever (1.0.0)
       chronic (>= 0.6.3)
+    win32-file (0.8.2)
+      ffi
+      ffi-win32-extensions
+      win32-file-stat (>= 1.4.0)
+    win32-file-stat (1.5.5)
+      ffi
+      ffi-win32-extensions
     zeitwerk (2.4.0)
 
 PLATFORMS
@@ -439,7 +450,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   addressable
   awesome_print
-  aws-sdk-s3 (~> 1)
+  aws-sdk-s3 (~> 1.87)
   bcrypt
   bootsnap
   capistrano (~> 3.10)

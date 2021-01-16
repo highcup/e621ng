@@ -48,7 +48,7 @@ gem 'request_store'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 
-gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-s3', '~> 1.87'
 
 
 gem 'mailgun-ruby'
