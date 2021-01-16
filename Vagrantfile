@@ -2,11 +2,11 @@ Vagrant.configure('2') do |config|
   config.hostmanager.enabled = true
   config.hostmanager.manage_host = true
 
-  config.vm.box = 'generic/ubuntu1804'
+  config.vm.box = 'ubuntu/bionic64'
 
   config.vm.provider 'virtualbox' do |v|
-    v.cpus = 2
-    v.memory = 1280
+    v.cpus = 4
+    v.memory = 2048
     if Vagrant::Util::Platform.windows?
       v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant", "1"]
     end
